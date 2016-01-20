@@ -14,9 +14,13 @@ class DockingStation
     bikes.pop
    end
 
-  def dock_bike(bike)
+  def dock_bike(bike, working=true)
     raise "No space!" if full?
+    report = working
     bikes << bike
+
+
+    end 
   end
 
   private
