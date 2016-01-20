@@ -10,6 +10,12 @@ it 'docks something' do
 	expect(subject.dock(bike)).to eq bike
 end
 
+it 'raises an error when the docking station is full' do
+	bike = Bike.new
+	subject.dock(bike)
+	expect { subject.dock(bike) }.to raise_error 'Docking station full'
+end
+
 describe '#release_bike' do
 it 'raises an error when there are no bikes available' do
 	expect{ subject.release_bike }.to raise_error 'No bikes available'
