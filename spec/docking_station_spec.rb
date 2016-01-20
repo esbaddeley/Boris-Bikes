@@ -23,10 +23,10 @@ describe DockingStation do
     let (:bike){Bike.new}
     it {is_expected.to respond_to :working?}
 
-    it 'expecting bike to break' do
-      expect(bike.working?).to eq false
-    end
+   # it 'expecting bike to break' {is_expect.to respond_to(dock_bike(bike, false))}
   end
+
+  
 
   
 

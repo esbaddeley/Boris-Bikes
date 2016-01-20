@@ -12,15 +12,12 @@ class DockingStation
   def release_bike
     fail 'No bikes available' if empty?
     bikes.pop
-   end
+  end
 
-  def dock_bike(bike, working=true)
+  def dock_bike(bike) #working=true)
     raise "No space!" if full?
-    report = working
-    bikes << bike
-
-
-    end 
+    #report = working
+    bikes << bike   
   end
 
   private
