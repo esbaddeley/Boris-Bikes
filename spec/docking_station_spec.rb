@@ -37,10 +37,23 @@ describe DockingStation do
         expect(subject.dock_bike(bike)).to eq [bike]
       end
 
-      it 'error when one bike in docking_station' do
-        DockingStation::DEFAULT_CAPACITY.times{subject.dock_bike(Bike.new)}
+      it 'error when full due to capacity' do
+        subject.capacity.times{subject.dock_bike(Bike.new)}
         expect {subject.dock_bike(Bike.new)}.to raise_error("No space!")
       end
+=begin
+#solution version of initialization unit test
+    describe 'initialization' do
+      subject { DockingStation.new }
+      let(:bike) { Bike.new }
+      it 'defaults capacity' do
+        described_class::DEFAULT_CAPACITY.times do
+          subject.dock(bike)
+        end
+        expect{ subject.dock(bike) }.to raise_error 'Docking station full'
+      end
+=end
+
     end
 
 end
