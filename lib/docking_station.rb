@@ -1,15 +1,23 @@
 class DockingStation
 
-   attr_reader :bike
+   attr_reader :bikes, :capacity, :num_bikes
+
+  def initialize(capacity=20)
+    @capacity = [capacity]
+    @num_bikes = 0
+  end
+
 
   def release_bike
-    raise "No bikes available" unless @bike
-    @bike 
+    raise "No bikes available" unless @num_bikes == 0
+    @num_bikes -= 1
+    @bikes
    end
 
   def dock_bike(bike)
-    raise "Bike already docked here" if @bike 
-    @bike = bike
+    raise "Bike already docked here" if @num_bikes >= @capacity[0]
+    @num_bikes += 1
+    @bikes = bike
   end
 
 
