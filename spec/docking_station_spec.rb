@@ -3,6 +3,7 @@ require 'docking_station'
 describe DockingStation do
 
   it {is_expected.to respond_to('release_bike')}
+    
     describe '#release_bike' do
       it 'releases a bike' do
         bike = Bike.new
@@ -36,5 +37,13 @@ describe DockingStation do
 
     expect {subject.release_bike}.to raise_error("No bikes available")
   end
+
+
+    describe '#dock_bike' do
+      it 'error when one bike in docking_station' do
+        subject.dock_bike(Bike.new)
+        expect {subject.dock_bike(Bike.new)}.to raise_error("Bike already docked here")
+      end
+    end
 
 end
