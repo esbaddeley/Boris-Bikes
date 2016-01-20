@@ -31,9 +31,17 @@ it 'allows a user to report a bike as broken' do
 	expect((station.dock(Bike.new, false).pop).bike_working).to eq false
 end
 
+
 describe '#release_bike' do
 it 'raises an error when there are no bikes available' do
 	expect{ subject.release_bike }.to raise_error 'No bikes available'
+end
+
+it 'does not release bikes which are broken' do
+	station = DockingStation.new
+	station.dock(Bike.new, true)
+	station.dock(Bike.new, false)
+	expect((station.release_bike).bike_working).to eq true
 end
 
 

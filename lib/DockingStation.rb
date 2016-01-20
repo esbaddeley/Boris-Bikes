@@ -12,9 +12,12 @@ attr_reader :bikes, :capacity
 	end
 
 	def release_bike
-		fail 'No bikes available' if empty?
-		@bikes.pop
+		bike_to_return = @bikes.detect { |bike| bike.bike_working}
+		@bikes.delete(bike_to_return)
+		fail 'No bikes available' if empty? || !bike_to_return
+		bike_to_return
 	end
+
 
 	def dock(bike, status=true)
 		fail 'Docking station full' if full?
@@ -31,4 +34,6 @@ attr_reader :bikes, :capacity
 	def empty?
 		@bikes.empty?
 	end
+
+
 end
