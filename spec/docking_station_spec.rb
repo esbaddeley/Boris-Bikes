@@ -41,18 +41,27 @@ describe DockingStation do
         subject.capacity.times{subject.dock_bike(Bike.new)}
         expect {subject.dock_bike(Bike.new)}.to raise_error("No space!")
       end
-=begin
-#solution version of initialization unit test
+
+    end
+
+
     describe 'initialization' do
       subject { DockingStation.new }
       let(:bike) { Bike.new }
       it 'defaults capacity' do
         described_class::DEFAULT_CAPACITY.times do
-          subject.dock(bike)
+          subject.dock_bike(bike)
         end
-        expect{ subject.dock(bike) }.to raise_error 'Docking station full'
+        expect{ subject.dock_bike(bike) }.to raise_error 'No space!'
       end
-=end
+
+
+      it 'initializing with capacity of 49' do
+        station = DockingStation.new 49
+        station.capacity.times{station.dock_bike(bike)}
+        expect {station.dock_bike(bike)}.to raise_error 'No space!'
+      end
+
 
     end
 
