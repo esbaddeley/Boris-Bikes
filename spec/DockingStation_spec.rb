@@ -26,6 +26,11 @@ it 'assigns the default capacity to DEFAULT_CAPACITY when no arguments are passe
 	expect(station.capacity).to eq(DockingStation::DEFAULT_CAPACITY)
 end
 
+it 'allows a user to report a bike as broken' do
+	station = DockingStation.new
+	expect((station.dock(Bike.new, false).pop).bike_working).to eq false
+end
+
 describe '#release_bike' do
 it 'raises an error when there are no bikes available' do
 	expect{ subject.release_bike }.to raise_error 'No bikes available'

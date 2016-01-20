@@ -16,8 +16,9 @@ attr_reader :bikes, :capacity
 		@bikes.pop
 	end
 
-	def dock(bike)
+	def dock(bike, status=true)
 		fail 'Docking station full' if full?
+		bike.bike_working = status
 		@bikes << bike
 	end
 
