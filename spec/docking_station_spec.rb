@@ -17,6 +17,14 @@ describe DockingStation do
       it 'should be working' do
         expect(bike).to be_working
       end
+
+      let (:bike2){Bike.new}
+      it 'does not release a broken bike' do
+          bike.report_broken
+          subject.dock_bike(bike2)
+          subject.dock_bike(bike)
+          expect(subject.release_bike).not_to be_broken
+      end
     end
 
   describe Bike do
@@ -26,19 +34,14 @@ describe DockingStation do
    # it 'expecting bike to break' {is_expect.to respond_to(dock_bike(bike, false))}
   end
 
-  
 
-  
-
-
-
-  it { is_expected.to respond_to(:dock_bike).with(2).argument }
+  it { is_expected.to respond_to(:dock_bike).with(1).argument }
 
   it { is_expected.to respond_to(:bikes)}
 
 
   it 'error since no bikes available' do
-    expect {subject.release_bike}.to raise_error("No bikes available")
+    expect {subject.release_bike}.to raise_error("No working bikes available")
   end
 
 
@@ -52,6 +55,15 @@ describe DockingStation do
         subject.capacity.times{subject.dock_bike(Bike.new)}
         expect {subject.dock_bike(Bike.new)}.to raise_error("No space!")
       end
+
+      let (:bike){Bike.new}
+      it 'docks a broken bike' do
+          bike.report_broken
+          subject.dock_bike(bike)
+          expect(subject.broken_bikes).to include(bike)
+      end
+
+
 
     end
 
