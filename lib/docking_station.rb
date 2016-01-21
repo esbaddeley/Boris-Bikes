@@ -19,7 +19,7 @@ class DockingStation
   end
 
   def release_to_fix
-    []
+    broken_bikes.pop(broken_bikes.length)
   end
 
 

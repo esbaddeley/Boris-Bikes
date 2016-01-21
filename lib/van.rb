@@ -1,6 +1,6 @@
 class Van
 
-  def pick_up(station)
+  def dock_bikes_to_fix(station)
   end
 
 end

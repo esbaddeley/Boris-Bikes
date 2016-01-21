@@ -85,10 +85,14 @@ describe DockingStation do
 
     describe '#release_to_fix' do
       let(:bike){double("bike", :broken? => true)}
-      it 'releases all the broken bikes' do
+      it 'releases all the broken bikes so there are none left in that array' do
         subject.dock_bike(bike)
         subject.release_to_fix
         expect(subject.broken_bikes).to eq([])
+      end
+      it 'return the bikes that were in the broken_bikes array' do
+        subject.dock_bike(bike)
+        expect(subject.release_to_fix).to include (bike)
       end
 
     end
