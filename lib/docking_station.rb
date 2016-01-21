@@ -18,6 +18,11 @@ class DockingStation
     #check bikes.pop . . . I thought previously that you would have to do bikes.each ... first
   end
 
+  def release_to_fix
+    []
+  end
+
+
   def dock_bike(bike)
     raise "No space!" if full?
     if bike.broken?

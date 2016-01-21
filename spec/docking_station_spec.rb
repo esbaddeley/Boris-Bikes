@@ -81,4 +81,18 @@ describe DockingStation do
 
     end
 
+    it { is_expected.to respond_to(:release_to_fix) }
+
+    describe '#release_to_fix' do
+      let(:bike){double("bike", :broken? => true)}
+      it 'releases all the broken bikes' do
+        subject.dock_bike(bike)
+        subject.release_to_fix
+        expect(subject.broken_bikes).to eq([])
+      end
+
+    end
+
+
+
 end
