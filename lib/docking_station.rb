@@ -1,3 +1,6 @@
+
+require 'bike.rb'
+
 class DockingStation
 
   attr_reader :bikes, :capacity
@@ -12,11 +15,11 @@ class DockingStation
   def release_bike
     fail 'No bikes available' if empty?
     bikes.pop
+    #check bikes.pop . . . I thought previously that you would have to do bikes.each ... first 
   end
 
-  def dock_bike(bike) #working=true)
+  def dock_bike(bike) 
     raise "No space!" if full?
-    #report = working
     bikes << bike   
   end
 
@@ -32,10 +35,4 @@ class DockingStation
 
 end
 
-class Bike
 
-  def working?
-    true
-  end
-
-end
