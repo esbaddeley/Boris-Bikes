@@ -9,29 +9,27 @@ describe DockingStation do
   it {is_expected.to respond_to('release_bike')}
 
     describe '#release_bike' do
-      let (:bike){Bike.new}
+      let(:bike){double("bike", :broken? => false, :working? => true)}
+      let(:bike2){double("bike2", :broken? => true)}
       it 'releases a bike' do
-        subject.dock_bike(bike)
+        subject.bikes << bike
+        #subject.dock_bike(bike)
         expect(subject.release_bike).to eq bike
       end
       it 'should be working' do
         expect(bike).to be_working
       end
 
-      let (:bike2){Bike.new}
       it 'does not release a broken bike' do
-          bike.report_broken
-          subject.dock_bike(bike2)
-          subject.dock_bike(bike)
-          expect(subject.release_bike).not_to be_broken
+        subject.dock_bike(bike)
+        subject.dock_bike(bike2)
+        expect(subject.release_bike).not_to be_broken
       end
     end
 
   describe Bike do
-    let (:bike){Bike.new}
+    let (:bike){double("bike", :working? => true)}
     it {is_expected.to respond_to :working?}
-
-   # it 'expecting bike to break' {is_expect.to respond_to(dock_bike(bike, false))}
   end
 
 
@@ -46,33 +44,29 @@ describe DockingStation do
 
 
     describe '#dock_bike' do
-      it 'docks something' do
-        bike = Bike.new
+    let(:bike){double("bike", :broken? => false)}
+      it 'docks a working bike' do
         expect(subject.dock_bike(bike)).to eq [bike]
       end
 
       it 'error when full due to capacity' do
-        subject.capacity.times{subject.dock_bike(Bike.new)}
-        expect {subject.dock_bike(Bike.new)}.to raise_error("No space!")
+        subject.capacity.times{subject.dock_bike(bike)}
+        expect {subject.dock_bike(double(:bike))}.to raise_error("No space!")
       end
 
-      let (:bike){Bike.new}
+      let (:bike){double("bike", :broken? => true)}
       it 'docks a broken bike' do
-          bike.report_broken
           subject.dock_bike(bike)
           expect(subject.broken_bikes).to include(bike)
       end
-
-
-
     end
 
 
     describe 'initialization' do
       subject { DockingStation.new }
-      let(:bike) { Bike.new }
+      let (:bike){double("bike", :broken? => false)}
       it 'defaults capacity' do
-        described_class::DEFAULT_CAPACITY.times do
+        DockingStation::DEFAULT_CAPACITY.times do
           subject.dock_bike(bike)
         end
         expect{ subject.dock_bike(bike) }.to raise_error 'No space!'
@@ -84,9 +78,6 @@ describe DockingStation do
         station.capacity.times{station.dock_bike(bike)}
         expect {station.dock_bike(bike)}.to raise_error 'No space!'
       end
-
-
-
 
     end
 
