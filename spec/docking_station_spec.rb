@@ -2,62 +2,82 @@ require "docking_station"
 
 describe DockingStation do
 
-  it { is_expected.to respond_to :release_bike }
+  describe "#release_bike" do
 
-  it 'returns a Bike' do
-    test_bike = Bike.new
-    subject.dock(test_bike)
-    expect(subject.release_bike).to eq test_bike
-  end
+    let(:bike){ double :bike }
 
-  it "doesn't release a bike if there are none available" do
-    expect {subject.release_bike}.to raise_error("There are no bikes here!")
-  end
 
-  it "doesn't dock a bike if over capacity" do
-     subject.set_capacity.times{subject.dock(Bike.new)}
-     expect{subject.dock(Bike.new)}.to raise_error("No space to dock here.")
-  end
+      it { is_expected.to respond_to :release_bike }
 
-  it {is_expected.to respond_to(:dock)}
+      it 'returns a Bike' do
+        allow(bike).to receive(:broken).and_return(false)
+        subject.dock(bike)
+        expect(subject.release_bike).to eq bike
+      end
 
-  it 'docks a working bike' do
-    test_bike = Bike.new
-    expect(subject.dock(test_bike).last).to eq test_bike
-  end
+      it "doesn't release a bike if there are none available" do
+        expect {subject.release_bike}.to raise_error("There are no bikes here!")
+      end
 
-  it 'docks a broken bike' do
-    test_bike = Bike.new
-    test_bike.is_broken
-    expect(subject.dock(test_bike).last).to eq test_bike
+      it "doesn't dock a bike if over capacity" do
+         subject.set_capacity.times{subject.dock(bike)}
+         expect{subject.dock(bike)}.to raise_error("No space to dock here.")
+      end
+
+    let(:bike){double("bike", :report_broken => true, :broken => true)}
+
+      it 'does not release a broken bike' do
+        bike.report_broken
+        subject.dock(bike)
+        expect {subject.release_bike}.to raise_error("There is no bike available")
+      end
+    end
+
+  describe "#dock" do
+    it {is_expected.to respond_to(:dock)}
+
+    it 'docks a working bike' do
+      test_bike = double(:bike)
+      expect(subject.dock(test_bike).last).to eq test_bike
+    end
+
+    it 'docks a broken bike' do
+      test_bike = double(:bike)
+      allow(test_bike).to receive(:report_broken).and_return(true)
+      test_bike.report_broken
+      expect(subject.dock(test_bike).last).to eq test_bike
+    end
   end
 
   it {is_expected.to respond_to :bikes}
 
   it 'returns docked bike' do
-    test_bike = Bike.new
+    test_bike = double(:bike)
     subject.dock(test_bike)
     expect(subject.bikes.last).to eq test_bike
   end
 
-  it 'sets a new capacity when provided a new value' do
-  	expect(subject.set_capacity(30)).to eq 30
+  describe "#capacity" do
+    it 'sets a new capacity when provided a new value' do
+    	expect(subject.set_capacity(30)).to eq 30
+    end
+
+    it 'checks if default capacity is 20' do
+    	expect(subject.set_capacity).to eq 20
+    end
   end
 
-  it 'checks if default capacity is 20' do
-  	expect(subject.set_capacity).to eq 20
-  end
+  describe "#release_broken_bikes" do
 
-  it 'reports that a bike is broken' do
-    bike = Bike.new
-    expect(bike.is_broken).to eq true
-  end
+    it { is_expected.to respond_to :release_broken_bikes }
 
-  it 'does not release a broken bike' do
-    bike = Bike.new
-    bike.is_broken
-    subject.dock(bike)
-    expect {subject.release_bike}.to raise_error("There is no bike available")
+    it 'releases broken bikes' do
+      test_bike = double(:bike)
+      subject.dock(test_bike)
+      allow(test_bike).to receive(:broken).and_return(true)
+      expect(subject.release_broken_bikes.last).to eq test_bike
+    end
+
   end
 
 end

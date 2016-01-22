@@ -18,6 +18,7 @@ class DockingStation
     raise "There are no bikes here!" if empty?
         # "This bike is broken, please try another one"
       for i in 0...@bikes.length
+        p bikes[i].broken
         if not @bikes[i].broken
           return @bikes.delete_at(i)
         end
@@ -28,6 +29,12 @@ class DockingStation
   def dock(bike)
     raise "No space to dock here." if full?
     @bikes << bike
+  end
+
+  def release_broken_bikes
+    broken_bikes = bikes.select { |i| i.broken }
+    bikes.reject! { |i| i.broken }
+    return broken_bikes
   end
 
   private
